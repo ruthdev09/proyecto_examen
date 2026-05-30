@@ -1,0 +1,58 @@
+{% extends 'base.html' %}
+
+{% block title %}Cursos – Gestión Académica{% endblock %}
+
+{% block content %}
+<div class="page-header">
+    <h2>📚 Cursos <span>{{ cursos|length }} registrado(s)</span></h2>
+    <a href="{% url 'crear_curso' %}" class="btn btn-success">+ Nuevo Curso</a>
+</div>
+
+<div class="card">
+    <table>
+        <thead>
+            <tr>
+                <th>Banner</th>
+                <th>Nombre del Curso</th>
+                <th>Docente</th>
+                <th style="text-align:center;">Créditos</th>
+                <th style="text-align:center;">Estudiantes</th>
+                <th style="text-align:center;">Acciones</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for c in cursos %}
+            <tr>
+                <td>
+                    {% if c.foto_curso %}
+                        <img src="{{ c.foto_curso.url }}" class="course-img" alt="Banner {{ c.nombre }}">
+                    {% else %}
+                        <div class="course-img-placeholder">📷</div>
+                    {% endif %}
+                </td>
+                <td><strong>{{ c.nombre }}</strong></td>
+                <td>{{ c.docente }}</td>
+                <td style="text-align:center;">
+                    <span class="badge badge-green">{{ c.creditos }} cr.</span>
+                </td>
+                <td style="text-align:center;">
+                    {{ c.estudiante_set.count }}
+                </td>
+                <td style="text-align:center;">
+                    <a href="{% url 'editar_curso' c.pk %}" class="btn btn-warning btn-sm">✏️ Editar</a>
+                    <a href="{% url 'eliminar_curso' c.pk %}"
+                       class="btn btn-danger btn-sm"
+                       onclick="return confirm('¿Eliminar el curso {{ c.nombre }}? Se eliminarán también sus estudiantes asociados.')">
+                       🗑️ Eliminar
+                    </a>
+                </td>
+            </tr>
+            {% empty %}
+            <tr class="empty-row">
+                <td colspan="6">No hay cursos registrados aún. ¡Crea el primero!</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock %}

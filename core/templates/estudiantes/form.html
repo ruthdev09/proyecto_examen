@@ -1,0 +1,38 @@
+{% extends 'base.html' %}
+
+{% block title %}{{ titulo }} – Gestión Académica{% endblock %}
+
+{% block content %}
+<div class="page-header">
+    <h2>{{ titulo }}</h2>
+    <a href="javascript:history.back()" class="btn btn-secondary">← Volver</a>
+</div>
+
+<div class="form-card">
+    <form method="POST" enctype="multipart/form-data">
+        {% csrf_token %}
+
+        {% for field in form %}
+        <div class="form-group">
+            <label for="{{ field.id_for_label }}">{{ field.label }}</label>
+            {{ field }}
+            {% if field.help_text %}
+                <p class="helptext">{{ field.help_text }}</p>
+            {% endif %}
+            {% if field.errors %}
+                <ul class="errorlist">
+                    {% for error in field.errors %}
+                        <li>⚠️ {{ error }}</li>
+                    {% endfor %}
+                </ul>
+            {% endif %}
+        </div>
+        {% endfor %}
+
+        <div class="form-actions">
+            <button type="submit" class="btn btn-primary">💾 Guardar</button>
+            <a href="javascript:history.back()" class="btn btn-secondary">Cancelar</a>
+        </div>
+    </form>
+</div>
+{% endblock %}

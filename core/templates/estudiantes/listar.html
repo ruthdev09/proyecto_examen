@@ -1,0 +1,54 @@
+{% extends 'base.html' %}
+
+{% block title %}Estudiantes – Gestión Académica{% endblock %}
+
+{% block content %}
+<div class="page-header">
+    <h2>👨‍🎓 Estudiantes <span>{{ estudiantes|length }} registrado(s)</span></h2>
+    <a href="{% url 'crear_estudiante' %}" class="btn btn-success">+ Nuevo Estudiante</a>
+</div>
+
+<div class="card">
+    <table>
+        <thead>
+            <tr>
+                <th>Foto</th>
+                <th>ID</th>
+                <th>Nombre Completo</th>
+                <th>Email</th>
+                <th>Curso</th>
+                <th style="text-align:center;">Acciones</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for e in estudiantes %}
+            <tr>
+                <td>
+                    {% if e.foto %}
+                        <img src="{{ e.foto.url }}" class="avatar" alt="Foto de {{ e.nombre }}">
+                    {% else %}
+                        <div class="avatar-placeholder">👤</div>
+                    {% endif %}
+                </td>
+                <td><strong>{{ e.id_estudiante }}</strong></td>
+                <td>{{ e.nombre }} {{ e.apellido }}</td>
+                <td>{{ e.email }}</td>
+                <td><span class="badge badge-blue">{{ e.curso.nombre }}</span></td>
+                <td style="text-align:center;">
+                    <a href="{% url 'editar_estudiante' e.pk %}" class="btn btn-warning btn-sm">✏️ Editar</a>
+                    <a href="{% url 'eliminar_estudiante' e.pk %}"
+                       class="btn btn-danger btn-sm"
+                       onclick="return confirm('¿Eliminar a {{ e.nombre }} {{ e.apellido }}? Esta acción no se puede deshacer.')">
+                       🗑️ Eliminar
+                    </a>
+                </td>
+            </tr>
+            {% empty %}
+            <tr class="empty-row">
+                <td colspan="6">No hay estudiantes registrados aún. ¡Agrega el primero!</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock %}
