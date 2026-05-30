@@ -13,7 +13,13 @@ SECRET_KEY = 'django-insecure-yt$)f3$(#&sf160#g&l4&+hrb(j3c5od2rvevmj_vwa$bdjt^e
 DEBUG = True 
 
 # Permitir todas las URLs para que funcione en Railway o cualquier hosting
-ALLOWED_HOSTS = ['*']
+ALLOWED_HOSTS = ['*']  # Vercel y cualquier dominio
+
+CSRF_TRUSTED_ORIGINS = [
+    'https://*.vercel.app',
+    'http://localhost:8000',
+    'http://127.0.0.1:8000',
+]
 
 # Definición de Aplicaciones
 INSTALLED_APPS = [
@@ -58,12 +64,12 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'gestion_academica.wsgi.application'
 
-# Configuración de Base de Datos (Híbrida: Local y Nube)
+# Configuración de Base de Datos — PostgreSQL en Neon
 DATABASES = {
     'default': dj_database_url.config(
-        # Si no hay una base de datos en la nube, usa Laragon
-        default='mysql://root:@127.0.0.1:3306/db_gestion_estudiantes',
-        conn_max_age=600
+        default='postgresql://neondb_owner:npg_CIPxc5hu1vqQ@ep-little-silence-aqskh11v-pooler.c-8.us-east-1.aws.neon.tech/neondb?sslmode=require&channel_binding=require',
+        conn_max_age=600,
+        conn_health_checks=True,
     )
 }
 
