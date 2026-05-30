@@ -5,7 +5,11 @@ import dj_database_url  # Importante: pip install dj-database-url
 # Ruta base del proyecto
 BASE_DIR = Path(__file__).resolve().parent.parent
 
-# SEGURIDAD: En desarrollo es True, en producción (App desplegada) debería ser False
+# --- SEGURIDAD ---
+# ¡ESTA ES LA LÍNEA QUE FALTABA! 
+SECRET_KEY = 'django-insecure-yt$)f3$(#&sf160#g&l4&+hrb(j3c5od2rvevmj_vwa$bdjt^e'
+
+# DEBUG es True para que puedas ver los errores mientras terminas el examen
 DEBUG = True 
 
 # Permitir todas las URLs para que funcione en Railway o cualquier hosting
@@ -83,18 +87,18 @@ STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 # Almacenamiento eficiente para archivos estáticos en producción
 STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 
-# Configuración de Imágenes (Media) - Local (como respaldo)
+# Configuración de Imágenes (Media)
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
-# --- CONFIGURACIÓN DE CLOUDINARY (SACADA DE TUS IMÁGENES) ---
+# --- CONFIGURACIÓN DE CLOUDINARY ---
 CLOUDINARY_STORAGE = {
     'CLOUD_NAME': 'dko2gdspm',
     'API_KEY': '764449157151482',
     'API_SECRET': '8WptNgfUdJjxXSlPSqgzCUhJfp8', 
 }
 
-# Línea CLAVE: Le dice a Django que las fotos se suban a la nube de Cloudinary
+# Línea CLAVE: Le dice a Django que las fotos se suban a Cloudinary
 DEFAULT_FILE_STORAGE = 'cloudinary_storage.storage.MediaCloudinaryStorage'
 
 # Configuración de mensajes (Alertas)
