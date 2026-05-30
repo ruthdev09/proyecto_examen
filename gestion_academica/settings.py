@@ -90,8 +90,6 @@ USE_TZ = True
 # Archivos Estáticos (CSS, JS)
 STATIC_URL = 'static/'
 STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
-# Almacenamiento eficiente para archivos estáticos en producción
-STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 
 # Configuración de Imágenes (Media)
 MEDIA_URL = '/media/'
@@ -101,11 +99,20 @@ MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 CLOUDINARY_STORAGE = {
     'CLOUD_NAME': 'dko2gdspm',
     'API_KEY': '764449157151482',
-    'API_SECRET': '8WptNgfUdJjxXSlPSqgzCUhJfp8', 
+    'API_SECRET': '8WptNgfUdJjxXSlPSqgzCUhJfp8',
 }
 
-# Línea CLAVE: Le dice a Django que las fotos se suban a Cloudinary
-DEFAULT_FILE_STORAGE = 'cloudinary_storage.storage.MediaCloudinaryStorage'
+# Django 4.2+ usa STORAGES en lugar de DEFAULT_FILE_STORAGE / STATICFILES_STORAGE
+STORAGES = {
+    # Imágenes subidas por usuarios → Cloudinary (evita el filesystem read-only de Vercel)
+    "default": {
+        "BACKEND": "cloudinary_storage.storage.MediaCloudinaryStorage",
+    },
+    # Archivos estáticos → Whitenoise (CSS, JS)
+    "staticfiles": {
+        "BACKEND": "whitenoise.storage.CompressedManifestStaticFilesStorage",
+    },
+}
 
 # Configuración de mensajes (Alertas)
 from django.contrib.messages import constants as message_constants
